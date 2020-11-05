@@ -25,7 +25,9 @@ export default {
   },
   methods: {
     tabbarItemClick(){
-      this.$router.replace(this.path)
+      if(this.$route.path !== this.path){
+        this.$router.replace(this.path)
+      }
 
     }
   },

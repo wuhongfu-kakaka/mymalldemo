@@ -1,6 +1,5 @@
 const path = require('path')
 const resolve = dir => path.resolve(__dirname, dir);
-console.log(resolve("src"))
 
 module.exports = {
   // configureWebpack: {
@@ -26,6 +25,7 @@ module.exports = {
       .set("@store", resolve("src/store"))
       .set("@utils", resolve("src/utils"))
       .set("@views", resolve("src/views"))
+      .set("@network", resolve("src/network"))
       
   
 }
