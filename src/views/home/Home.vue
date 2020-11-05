@@ -5,27 +5,21 @@
         <span>购物街</span>
       </template>
     </navbar>
-    <home-swiper :banners="banners" />
-    <home-recommend :recommends="recommends"/>
-    <home-feature />
-    <tab-control :titles="goods.tabControlTitles" 
-    ref="tab"
-    @tab-click="tabClick"
-    class="tab-control"/>
-    <goods-list :goods="goodsList"/>
+    <scroll 
+    ref="scroll"
+    @pullingUp="loadMoreGoods"
+    @scroll="contentScroll">
+      <home-swiper :banners="banners" />
+      <home-recommend :recommends="recommends"/>
+      <home-feature />
+      <tab-control :titles="goods.tabControlTitles" 
+      ref="tab"
+      @tab-click="tabClick"
+      class="tab-control"/>
+      <goods-list :goods="goodsList"/>
+    </scroll>
 
-    <ul>
-      <li>1</li>
-      <li>2</li>
-      <li>3</li>
-      <li>4</li>
-      <li>5</li>
-      <li>6</li>
-      <li>7</li>
-      <li>8</li>
-      <li>9</li>
-      <li>10</li>
-    </ul>
+    <back-top @click.native="backToTop" v-show="isShowBackTop"/>
   </div>
   
 </template>
@@ -33,8 +27,11 @@
 <script>
 import Navbar from "@components/common/navbar/Navbar"
 import TabControl from "@components/content/tab_control/TabControl"
+import Scroll from "@components/common/scroll/Scroll"
 
 import GoodsList from "@components/content/goods/GoodsList"
+import BackTop from "@components/content/backtop/BackTop"
+
 
 import HomeSwiper from "./childComps/HomeSwiper"
 import HomeRecommend from "./childComps/HomeRecommend"
@@ -51,12 +48,15 @@ export default {
     HomeRecommend,
     HomeFeature,
     TabControl,
-    GoodsList
+    GoodsList,
+    Scroll,
+    BackTop
   },
   data(){
     return {
       banners: [],
       recommends: [],
+      isShowBackTop: false,
       currentDataType: "pop",
       goods: {
         tabControlTitles: ["流行", "新款", "精选"],
@@ -92,6 +92,10 @@ export default {
     this.goods.dataType.forEach( type => this.getHomeGoods(type))
 
   },
+  activated(){
+    this.$refs.scroll.bscroll.refresh()
+    console.log(1)
+  },
   methods: {
     getHomeMultidata(){
       getHomeMultidata()
@@ -104,20 +108,45 @@ export default {
       .catch((error) => console.log(error))
     },
     /*
-    *
+    * 当下拉到底时，加载更多商品
+    */
+    async loadMoreGoods(){
+      await this.getHomeGoods(this.currentDataType)
+
+      this.$refs.scroll.bscroll.refresh()
+      this.$refs.scroll.bscroll.finishPullUp()
+      
+
+    },
+    /*
     * type, page
     * */
-    getHomeGoods(type){
-      let page = this.goods.data[type].page += 1
-    
-    getHomeGoods(type, page)
+     async getHomeGoods(type){
+      let page = this.goods.data[type].page + 1
+
+      await getHomeGoods(type, page)
       .then(res =>  {
-        this.goods.data[type].list = res.data.list
+        this.goods.data[type].list.push(...res.data.list)
+        this.goods.data[type].page++;
       })
+      .catch((error) => console.log(error))
+
     },
     tabClick(index){
       //点击切换商品数据类型
       this.currentDataType = this.goods.dataType[index]
+
+    },
+    /**
+     * 
+     *  上拉的时候触发该函数
+     * */    
+    contentScroll(position){
+      //1、判断是否显示返回top部位置图标
+      this.isShowBackTop = position.y < -1000
+    },
+    backToTop(){
+      this.$refs.scroll.bscroll.scrollTo(0,0)
     }
 
   }

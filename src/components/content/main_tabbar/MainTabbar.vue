@@ -1,5 +1,5 @@
 <template>
-  <tabbar>
+  <tabbar class="main-tabbar">
     <tabbar-item path="/home">
       <template v-slot:item-icon>
         <img src="@assets/img/tabbar/home.svg" alt="">
@@ -64,5 +64,7 @@ export default {
 </script>
 
 <style>
-
+.main-tabbar{
+  z-index: 101;
+}
 </style>
