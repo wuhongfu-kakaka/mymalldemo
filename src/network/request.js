@@ -19,11 +19,10 @@ instance.interceptors.response.use(res => {
   return err
 })
 
-export default {
+export default 
   /*
   *  instance#request(config)
   *  instance#get(url[, config])
   *  instance#post(url[, data[, config]])
   */
   instance
-}

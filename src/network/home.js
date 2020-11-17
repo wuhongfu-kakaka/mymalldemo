@@ -1,12 +1,12 @@
-import Request from "./request"
+import instance from "./request"
 
 
 export function getHomeMultidata() {
-  return Request.instance.get("/home/multidata")
+  return instance.get("/home/multidata")
 }
 
 export function getHomeGoods(type, page) {
-  return Request.instance.get("/home/data",{
+  return instance.get("/home/data",{
     params: {
       type,
       page

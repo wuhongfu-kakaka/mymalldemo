@@ -59,6 +59,9 @@ export default {
   components: {
     Tabbar,
     TabbarItem
+  },
+  props: {
+    
   }
 }
 </script>

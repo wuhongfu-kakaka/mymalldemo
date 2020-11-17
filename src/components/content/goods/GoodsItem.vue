@@ -1,8 +1,7 @@
 <template>
 <div>
-    <a href="javascript:;">
-      <div class="goods-item">
-        <img :src="goodsItem.show.img" alt="" class="item">
+      <div class="goods-item" @click="goodsItemclick">
+        <img :src="goodsItem.show.img" alt="" class="item" @load="imgLoad">
         <div class="item-info item">
           <p>{{goodsItem.title}}</p>
           <div>
@@ -11,7 +10,6 @@
           </div>
         </div>
       </div>
-    </a>
 </div>
 </template>
 
@@ -26,6 +24,25 @@ export default {
       }
     }
   },
+  created(){
+    this.iid = this.goodsItem.iid
+  },
+  data(){
+    return {
+
+    }
+  },
+  methods: {
+    imgLoad(){
+      this.$bus.$emit('GoodsItemImgLoad')
+    },
+    goodsItemclick(){
+      this.$router.push({
+        name: 'detail',
+        params: { iid: this.iid }
+      })
+    }
+  }
 }
 </script>
 
