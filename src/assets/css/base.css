@@ -26,6 +26,7 @@ body {
   color: var(--color-text);
   /* rem vw/vh */
   width: 100vw;
+  background-color: #f6f6f6;
 }
 
 a {

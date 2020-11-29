@@ -57,8 +57,10 @@ export default {
   width: 375px;
 }
 .detail-swipe-item img{
-  width: 375px;
-  height: 444px;
+  display: flow-root;
+  width: 330px;
+  height: 414px;
+  margin: 0 35px 0px 10px;
 }
 .custom-indicator {
   position: absolute;

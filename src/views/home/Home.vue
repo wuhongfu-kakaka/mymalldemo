@@ -189,7 +189,6 @@ export default {
       
       //在swiper轮播图片加载完成之后，保存tabControl的offsetTop
       this.tabOffsetTop = this.$refs.tab.$el.offsetTop
-      console.log(this.tabOffsetTop)
     }
 
   }
